@@ -1,0 +1,8 @@
+# 本地工具索引（reverse-skill 约定 gitignore）
+tool-index.md
+# 调查工件
+work/
+cases/
+# 系统杂物
+Thumbs.db
+.DS_Store
