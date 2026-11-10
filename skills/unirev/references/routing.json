@@ -1,0 +1,68 @@
+{
+  "version": "unirev-routing-v1",
+  "gates": {
+    "consent": "未获用户明确授权（auth 未 grant）前，禁止一切主动攻击操作（爆破、漏洞利用、绕过、破坏性测试）；先建立 work/<case>/scope.md 记录授权范围",
+    "source": "vendors/reverse-skill/RULES.md"
+  },
+  "evidence": {
+    "crossPhase": "任务跨 ≥2 阶段（如拆解→重建→比对）或需产出报告时，先开 craft-anything 调查项目承接；rea 证据用 export_evidence_bundle 导出，再在 CA 侧 import_evidence_bundle 入账本"
+  },
+  "routes": [
+    {
+      "id": "R-CTF-WEB",
+      "signals": ["CTF", "web 题", "SQL 注入", "XSS", "crypto", "misc", "密码学", "流量分析", "WAF", "CTF 平台题"],
+      "primary": { "toolset": "reverse-skill", "skill": "CTF-Sandbox-Orchestrator" },
+      "aux": [ { "toolset": "reverse_lab_tools", "tools": ["http_probe", "kb_router"] } ],
+      "kb": ["vendors/open-reverselab/kb/ctf-website"]
+    },
+    {
+      "id": "R-CTF-PWN",
+      "signals": ["pwn", "crackme", "ELF", "reversing challenge", "CTF 二进制题", "堆题", "ROP"],
+      "primary": { "toolset": "rea", "tools": ["open_binary", "decompile_all", "search_strings", "rizin_debug_session"] },
+      "aux": [ { "toolset": "reverse-skill", "skill": "pwn-chain" } ],
+      "kb": ["vendors/open-reverselab/kb/pe-reverse"]
+    },
+    {
+      "id": "R-APK",
+      "signals": ["APK", "安卓", "Android", "脱壳", "Frida Hook", "重打包", "SSL pinning", "app 逆向", "JADX", "签名校验"],
+      "primary": { "toolset": "rea", "tools": ["inspect_apk_signature", "decode_android_resources", "inspect_android_class", "inspect_android_method", "instrument_with_frida", "list_adb_devices"] },
+      "aux": [ { "toolset": "reverse-skill", "skill": "apk-reverse" }, { "toolset": "reverse-skill", "skill": "mobile-reverse" } ],
+      "kb": ["vendors/open-reverselab/kb/apk-reverse"]
+    },
+    {
+      "id": "R-PE",
+      "signals": ["PE", "Windows 程序", "恶意样本", "malware", ".NET", "ConfuserEx", "脱混淆", "反作弊", "dnSpy", "IDA"],
+      "primary": { "toolset": "rea", "tools": ["open_binary", "batch_decompile", "inspect_pe_imports", "inspect_pe_certificates", "inspect_managed_artifact", "inspect_managed_members"] },
+      "aux": [ { "toolset": "reverse-skill", "skill": "dotnet-reverse" }, { "toolset": "reverse-skill", "skill": "malware-analysis" } ],
+      "kb": ["vendors/open-reverselab/kb/pe-reverse"]
+    },
+    {
+      "id": "R-WEBJS",
+      "signals": ["加密参数", "前端加密", "sign", "Electron", "JS 逆向", "补环境", "webpack", "浏览器 Hook", "抓包", "asr"],
+      "primary": { "toolset": "rea", "tools": ["analyze_javascript_application", "recover_javascript_sources", "capture_browser_scenario", "inspect_web_network_capture"] },
+      "aux": [ { "toolset": "reverse-skill", "skill": "js-reverse" } ],
+      "kb": ["vendors/open-reverselab/kb/general"]
+    },
+    {
+      "id": "R-REBUILD",
+      "signals": ["重建", "复刻", "克隆实现", "clean room", "版本对比后重建", "帮我做一个功能一样的"],
+      "primary": { "toolset": "craft-anything", "tools": ["core_investigation_show", "core_brief_write", "core_plan_update", "core_target_select"] },
+      "aux": [ { "toolset": "rea", "tools": ["capture_web_screenshot", "compare_web_captures"] } ],
+      "kb": []
+    },
+    {
+      "id": "R-CROSS",
+      "signals": ["跨阶段", "多阶段任务", "出报告", "完整流程", "对比两个版本", "端到端分析"],
+      "primary": { "toolset": "craft-anything", "tools": ["core_investigation_show", "core_hypothesis_record", "core_finding_record"] },
+      "aux": [ { "toolset": "rea", "tools": ["export_evidence_bundle"] }, { "toolset": "reverse_lab_tools", "tools": ["kb_router"] } ],
+      "kb": []
+    },
+    {
+      "id": "R-GATE-REJECT",
+      "signals": ["__gate_only__"],
+      "primary": { "toolset": "none" },
+      "aux": [],
+      "kb": []
+    }
+  ]
+}

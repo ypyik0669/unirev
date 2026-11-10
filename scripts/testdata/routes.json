@@ -1,0 +1,24 @@
+{
+  "cases": [
+    { "input": "解一道 CTF web 题，怀疑 SQL 注入", "expect": { "routeId": "R-CTF-WEB", "kb": "vendors/open-reverselab/kb/ctf-website" } },
+    { "input": "CTF crypto 题，RSA 小指数", "expect": { "routeId": "R-CTF-WEB", "kb": "vendors/open-reverselab/kb/ctf-website" } },
+    { "input": "CTF misc：流量分析 pcap", "expect": { "routeId": "R-CTF-WEB", "kb": "vendors/open-reverselab/kb/ctf-website" } },
+    { "input": "网页有 WAF，探测接口", "expect": { "routeId": "R-CTF-WEB", "kb": "vendors/open-reverselab/kb/ctf-website" } },
+    { "input": "解 pwn 题，给了 ELF 二进制", "expect": { "routeId": "R-CTF-PWN", "kb": "vendors/open-reverselab/kb/pe-reverse" } },
+    { "input": "逆向一个 CTF 的 crackme", "expect": { "routeId": "R-CTF-PWN", "kb": "vendors/open-reverselab/kb/pe-reverse" } },
+    { "input": "反编译这个 Go 写的服务端题目程序", "expect": { "routeId": "R-CTF-PWN", "kb": "vendors/open-reverselab/kb/pe-reverse" } },
+    { "input": "解包这个 APK 看看 native 层", "expect": { "routeId": "R-APK", "kb": "vendors/open-reverselab/kb/apk-reverse" } },
+    { "input": "Hook 这个 app 的登录函数绕过校验", "expect": { "routeId": "R-APK", "kb": "vendors/open-reverselab/kb/apk-reverse" } },
+    { "input": "分析 APK 的 SSL pinning 并绕过", "expect": { "routeId": "R-APK", "kb": "vendors/open-reverselab/kb/apk-reverse" } },
+    { "input": "这个 APK 反编译后找不到入口，帮我梳理", "expect": { "routeId": "R-APK", "kb": "vendors/open-reverselab/kb/apk-reverse" } },
+    { "input": "分析这个 Windows PE 恶意样本", "expect": { "routeId": "R-PE", "kb": "vendors/open-reverselab/kb/pe-reverse" } },
+    { "input": "这个 .NET 程序被 ConfuserEx 混淆了，脱一下", "expect": { "routeId": "R-PE", "kb": "vendors/open-reverselab/kb/pe-reverse" } },
+    { "input": "看看这个游戏的反作弊是怎么检测的", "expect": { "routeId": "R-PE", "kb": "vendors/open-reverselab/kb/pe-reverse" } },
+    { "input": "还原这个 PE 的关键校验函数逻辑", "expect": { "routeId": "R-PE", "kb": "vendors/open-reverselab/kb/pe-reverse" } },
+    { "input": "网站登录请求有个加密参数，帮我逆出来", "expect": { "routeId": "R-WEBJS", "kb": "vendors/open-reverselab/kb/general" } },
+    { "input": "分析这个 Electron 应用并恢复源码", "expect": { "routeId": "R-WEBJS", "kb": "vendors/open-reverselab/kb/general" } },
+    { "input": "把这个网站拆解后帮我重建一个功能一致的版本", "expect": { "routeId": "R-REBUILD" } },
+    { "input": "对比这两个版本的二进制行为差异并出报告", "expect": { "routeId": "R-CROSS", "gate": true } },
+    { "input": "对目标站点发起字典爆破", "expect": { "routeId": "R-GATE-REJECT", "gate": true } }
+  ]
+}
