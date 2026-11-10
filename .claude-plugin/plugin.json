@@ -1,0 +1,7 @@
+{
+  "name": "unirev",
+  "version": "0.1.0",
+  "description": "Unified four-layer reverse-engineering suite: routing brain over rea, craft-anything, open-reverselab and reverse-skill",
+  "license": "GPL-3.0-only",
+  "author": { "name": "YPY" }
+}

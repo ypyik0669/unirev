@@ -1,0 +1,11 @@
+{
+  "name": "unirev-local",
+  "owner": { "name": "YPY" },
+  "plugins": [
+    {
+      "name": "unirev",
+      "source": "./",
+      "description": "四合一逆向工程套件：rea + craft-anything + open-reverselab + reverse-skill 统一路由"
+    }
+  ]
+}
