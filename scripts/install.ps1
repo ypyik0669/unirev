@@ -49,7 +49,7 @@ if ($ca) { & $ca doctor 2>&1 | Select-Object -First 3 | ForEach-Object { Note 'I
 
 # 7) reverse-skill 工具索引
 $rti = "$root/vendors/reverse-skill/scripts/refresh-tool-index.ps1"
-if (Test-Path $rti) { pwsh -NoProfile -File $rti *>$null; if (Test-Path "$root/vendors/reverse-skill/tool-index.md") { Note 'OK' 'reverse-skill tool index generated' } else { Note 'WARN' 'tool index script ran but output missing' } }
+if (Test-Path $rti) { pwsh -NoProfile -File $rti *>$null; if (Test-Path "$root/vendors/reverse-skill/skills/tool-index.md") { Note 'OK' 'reverse-skill tool index generated' } else { Note 'WARN' 'tool index script ran but output missing' } }
 else { Note 'WARN' "refresh-tool-index not found at $rti" }
 
 # 8) 路由回归测试

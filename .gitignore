@@ -6,3 +6,5 @@ cases/
 # 系统杂物
 Thumbs.db
 .DS_Store
+# 本仓库工作区（SDD 计划/报告等临时文件）
+.superpowers/
