@@ -1,0 +1,6 @@
+[submodule "vendors/open-reverselab"]
+	path = vendors/open-reverselab
+	url = https://github.com/LING71671/open-reverselab
+[submodule "vendors/reverse-skill"]
+	path = vendors/reverse-skill
+	url = https://github.com/zhaoxuya520/reverse-skill
