@@ -9,8 +9,24 @@ git -C $root submodule update --init --recursive 2>&1 | Out-Null
 if ($LASTEXITCODE -eq 0 -and (Test-Path "$root/vendors/open-reverselab/kb")) { Note 'OK' 'submodules present' }
 else { Note 'FAIL' 'submodules missing; check network/git' }
 
-# 2) rea-agents（≥6.8.0）
-$rea = & node -e "try{console.log(JSON.parse(require('child_process').execSync('npm ls -g rea-agents --json --depth=0').toString()).dependencies['rea-agents'].version)}catch(e){console.log('')}" 2>$null
+# 2) rea-agents（≥6.8.0）：优先读 ~/.claude.json 中 rea 注册的 rea.mjs → package.json（nvm 多版本下 npm 全局未必可见），否则退回 npm 全局查询
+$rea = ''
+$claudeJsonProbe = "$env:USERPROFILE\.claude.json"
+try {
+  if (Test-Path $claudeJsonProbe) {
+    $reaMjs = ((Get-Content $claudeJsonProbe -Raw | ConvertFrom-Json -AsHashtable).mcpServers.rea.args |
+      Where-Object { $_ -like '*rea.mjs' } | Select-Object -First 1)
+    if ($reaMjs) {
+      # rea.mjs 可能在包根或 scripts/ 子目录，逐级上找 package.json
+      $reaPkg = Join-Path (Split-Path -Parent $reaMjs) 'package.json'
+      if (-not (Test-Path $reaPkg)) { $reaPkg = Join-Path (Split-Path -Parent (Split-Path -Parent $reaMjs)) 'package.json' }
+      if (Test-Path $reaPkg) { $rea = (Get-Content $reaPkg -Raw | ConvertFrom-Json -AsHashtable).version }
+    }
+  }
+} catch { }
+if (-not $rea) {
+  $rea = & node -e "try{console.log(JSON.parse(require('child_process').execSync('npm ls -g rea-agents --json --depth=0').toString()).dependencies['rea-agents'].version)}catch(e){console.log('')}" 2>$null
+}
 if ($rea) {
   $major = [version]$rea
   if ($major -ge [version]'6.8.0') { Note "OK" "rea-agents $rea installed" } else { Note 'WARN' "rea-agents $rea < 6.8.0; run: npm i -g rea-agents" }
@@ -31,15 +47,18 @@ if ($uv) { Note 'OK' 'uv found' } else { Note 'WARN' 'uv not found; reverse_lab_
 # 5) reverse_lab_tools 全局注册（无则注册，幂等）
 $claudeJson = "$env:USERPROFILE\.claude.json"
 if ($uv -and (Test-Path $claudeJson)) {
-  $cfg = Get-Content $claudeJson -Raw | ConvertFrom-Json
-  if ($cfg.mcpServers -and $cfg.mcpServers.PSObject.Properties['reverse_lab_tools']) {
+  $cfg = Get-Content $claudeJson -Raw | ConvertFrom-Json -AsHashtable
+  if ($cfg.mcpServers -and $cfg.mcpServers.Contains('reverse_lab_tools')) {
     Note 'OK' 'reverse_lab_tools already registered'
   } else {
     $mcpDir = "$root/vendors/open-reverselab/tools/skills/mcp/ReverseLabToolsMCP"
     if (Test-Path "$mcpDir/reverse_lab_tools_mcp.py") {
-      claude mcp add --scope user reverse_lab_tools -- uv run --project $mcpDir python "$mcpDir/reverse_lab_tools_mcp.py"
+      # PowerShell 不向原生命令透传裸 `--` 分隔符，故用 add-json 传完整定义；
+      # 上游 requires-python 声明 >=3.10 但代码使用 tomllib（3.11+ 标准库），故显式钉 >=3.11
+      $mcpJson = @{ type = 'stdio'; command = 'uv'; args = @('run', '--project', $mcpDir, '--python', '>=3.11', 'python', "$mcpDir/reverse_lab_tools_mcp.py") } | ConvertTo-Json -Compress
+      & claude mcp add-json --scope user reverse_lab_tools $mcpJson
       if ($LASTEXITCODE -eq 0) { Note 'OK' 'reverse_lab_tools registered (restart Claude Code to load)' }
-      else { Note 'FAIL' 'claude mcp add failed' }
+      else { Note 'FAIL' 'claude mcp add-json failed' }
     } else { Note 'FAIL' "MCP entry not found: $mcpDir/reverse_lab_tools_mcp.py" }
   }
 }
