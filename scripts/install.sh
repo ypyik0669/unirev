@@ -22,7 +22,7 @@ if command -v uv >/dev/null 2>&1 && [ -f "$MCPDIR/reverse_lab_tools_mcp.py" ]; t
     || { claude mcp add --scope user reverse_lab_tools -- uv run --project "$MCPDIR" python "$MCPDIR/reverse_lab_tools_mcp.py" && ok 'reverse_lab_tools registered'; }
 fi
 
-[ -f "$ROOT/vendors/reverse-skill/refresh-tool-index.sh" ] && sh "$ROOT/vendors/reverse-skill/refresh-tool-index.sh" >/dev/null 2>&1 && ok 'reverse-skill tool index generated' || warn 'tool index step skipped'
+[ -f "$ROOT/vendors/reverse-skill/skills/scripts/refresh-tool-index.sh" ] && sh "$ROOT/vendors/reverse-skill/skills/scripts/refresh-tool-index.sh" >/dev/null 2>&1 && ok 'reverse-skill tool index generated' || warn 'tool index step skipped'
 
 sh "$(dirname "$0")/route-test.sh" && ok 'route-test passed' || fail 'route-test failed'
 printf '%s\n' '=== unirev install report done ==='
