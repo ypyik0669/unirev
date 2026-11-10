@@ -28,10 +28,14 @@ if (-not $rea) {
   $rea = & node -e "try{console.log(JSON.parse(require('child_process').execSync('npm ls -g rea-agents --json --depth=0').toString()).dependencies['rea-agents'].version)}catch(e){console.log('')}" 2>$null
 }
 if ($rea) {
-  $major = [version]$rea
-  if ($major -ge [version]'6.8.0') { Note "OK" "rea-agents $rea installed" } else { Note 'WARN' "rea-agents $rea < 6.8.0; run: npm i -g rea-agents" }
+  try {
+    if ([version]$rea -ge [version]'6.8.0') { Note "OK" "rea-agents $rea installed" } else { Note 'WARN' "rea-agents $rea < 6.8.0; run: npm i -g rea-agents" }
+  } catch { Note 'WARN' "rea-agents version unparsable: '$rea'; run: npm i -g rea-agents" }
 } else {
-  Note 'WARN' 'rea-agents not found; run: npm install -g rea-agents'
+  Note 'INFO' 'rea-agents not found; installing globally (idempotent)...'
+  & npm install -g rea-agents
+  if ($LASTEXITCODE -eq 0) { Note 'OK' 'rea-agents installed via npm install -g' }
+  else { Note 'WARN' 'rea-agents auto-install failed; run manually: npm install -g rea-agents' }
 }
 
 # 3) craft-anything-cli
@@ -48,7 +52,7 @@ if ($uv) { Note 'OK' 'uv found' } else { Note 'WARN' 'uv not found; reverse_lab_
 $claudeJson = "$env:USERPROFILE\.claude.json"
 if ($uv -and (Test-Path $claudeJson)) {
   $cfg = Get-Content $claudeJson -Raw | ConvertFrom-Json -AsHashtable
-  if ($cfg.mcpServers -and $cfg.mcpServers.Contains('reverse_lab_tools')) {
+  if ($cfg.mcpServers -and @($cfg.mcpServers.Keys) -icontains 'reverse_lab_tools') {
     Note 'OK' 'reverse_lab_tools already registered'
   } else {
     $mcpDir = "$root/vendors/open-reverselab/tools/skills/mcp/ReverseLabToolsMCP"
@@ -61,6 +65,10 @@ if ($uv -and (Test-Path $claudeJson)) {
       else { Note 'FAIL' 'claude mcp add-json failed' }
     } else { Note 'FAIL' "MCP entry not found: $mcpDir/reverse_lab_tools_mcp.py" }
   }
+} elseif (-not $uv) {
+  Note 'WARN' 'reverse_lab_tools registration skipped: uv not found (install https://docs.astral.sh/uv/ and re-run)'
+} else {
+  Note 'WARN' 'reverse_lab_tools registration skipped: ~/.claude.json not found'
 }
 
 # 6) 健康检查

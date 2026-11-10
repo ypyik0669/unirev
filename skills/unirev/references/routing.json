@@ -17,14 +17,14 @@
     },
     {
       "id": "R-CTF-PWN",
-      "signals": ["pwn", "crackme", "ELF", "reversing challenge", "CTF 二进制题", "堆题", "ROP"],
+      "signals": ["pwn", "crackme", "ELF", "reversing challenge", "CTF 二进制题", "堆题", "ROP", "服务端题目"],
       "primary": { "toolset": "rea", "tools": ["open_binary", "decompile_all", "search_strings", "rizin_debug_session"] },
       "aux": [ { "toolset": "reverse-skill", "skill": "pwn-chain" } ],
       "kb": ["vendors/open-reverselab/kb/pe-reverse"]
     },
     {
       "id": "R-APK",
-      "signals": ["APK", "安卓", "Android", "脱壳", "Frida Hook", "重打包", "SSL pinning", "app 逆向", "JADX", "签名校验"],
+      "signals": ["APK", "安卓", "Android", "脱壳", "Frida Hook", "Hook", "重打包", "SSL pinning", "app 逆向", "JADX", "签名校验"],
       "primary": { "toolset": "rea", "tools": ["inspect_apk_signature", "decode_android_resources", "inspect_android_class", "inspect_android_method", "instrument_with_frida", "list_adb_devices"] },
       "aux": [ { "toolset": "reverse-skill", "skill": "apk-reverse" }, { "toolset": "reverse-skill", "skill": "mobile-reverse" } ],
       "kb": ["vendors/open-reverselab/kb/apk-reverse"]

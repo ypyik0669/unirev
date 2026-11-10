@@ -9,8 +9,12 @@
 
     pwsh ./scripts/install.ps1
 
-安装脚本自动：拉 submodule、装/校验 rea-agents ≥ 6.8.0 与 craft-anything-cli ≥ 0.6.0、
-注册 reverse_lab_tools MCP、跑三服务器健康检查。
+安装脚本自动：拉 submodule、缺失时安装 rea-agents（`npm install -g rea-agents`，幂等）、
+仅校验 craft-anything-cli（不安装）、注册 reverse_lab_tools MCP、跑三服务器健康检查。
+
+craft-anything-cli 需手动获取：从
+[github.com/storytold/craft-anything/releases](https://github.com/storytold/craft-anything/releases)
+下载对应平台二进制并放入 PATH。注意：update.ps1 同步 submodule 与 rea-agents，**不会**刷新 craft-anything-cli。
 
 ## 更新
 
@@ -18,7 +22,8 @@
 
 ## 插件安装到 Claude Code
 
-    claude plugin marketplace add C:\Users\YPY\tools\unirev
+    # 需在仓库根目录执行（CLI 不接受绝对 Windows 路径）
+    claude plugin marketplace add ./
     claude plugin install unirev@unirev-local
 
 ## 布局
