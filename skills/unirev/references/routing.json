@@ -1,7 +1,7 @@
 {
   "version": "unirev-routing-v1",
   "gates": {
-    "consent": "未获用户明确授权（auth 未 grant）前，禁止一切主动攻击操作（爆破、漏洞利用、绕过、破坏性测试）；先建立 work/<case>/scope.md 记录授权范围",
+    "consent": "任何可能影响目标系统或其数据的操作，必须先获得用户对本次范围的明确授权（auth grant），并建立 work/<case>/scope.md 记录授权范围；未获授权时暂停并向用户确认。CTF 题目与教学挑战默认视为已授权的沙箱环境",
     "source": "vendors/reverse-skill/RULES.md"
   },
   "evidence": {

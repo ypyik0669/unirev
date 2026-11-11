@@ -1,18 +1,23 @@
 ---
 name: unirev
-description: 统一路由逆向工程与安全分析任务的四合一套件。收到 CTF、二进制/APK/PE/JS 逆向、恶意样本分析、软件拆解重建、版本对比类任务时使用：判断路由到 rea（深度分析）、craft-anything（编排重建）、open-reverselab（知识库+工具）还是 reverse-skill（技能模块），并强制执行授权门与证据沉淀规则。
+description: 统一调度四合一逆向分析套件（rea / craft-anything / open-reverselab / reverse-skill）。适用于授权范围内的 CTF 解题、逆向工程学习与分析、二进制/APK/PE/JS 程序分析、恶意样本防御分析、软件拆解与重建、版本对比等任务：按 references/routing.json 选择主力工具、辅助工具与知识库，并在全程执行授权确认与证据沉淀规则。
 metadata:
-  version: "1"
+  version: "2"
 ---
 
 # unirev 路由大脑
 
-## 第 0 步：授权门（最高优先级）
+本套件面向三类合规场景：① CTF 竞赛解题（教育性挑战环境）；② 用户拥有所有权
+或已获书面授权的软件/系统的分析；③ 防御性分析（恶意样本研判、加固建议）。
+所有操作默认在实验室/沙箱环境中进行。
 
-读 `references/routing.json` 的 `gates`。若任务含主动攻击性质（爆破、利用、绕过、
-破坏性操作）而用户尚未授权：停止，向用户索要明确授权并说明范围；授权后按
+## 第 0 步：授权确认（最高优先级）
+
+读 `references/routing.json` 的 `gates`。任何可能影响目标系统或其数据的操作，
+都必须先确认用户已明确授权本次范围；尚未授权时：暂停，向用户说明需要授权的
+具体内容与范围，得到确认后再继续。获得授权后按
 `vendors/reverse-skill/RULES.md` 的 0–14 步行为链执行。行为链与本路由表冲突时，
-以授权门为准。
+以授权确认步骤为准。
 
 ## 第 1 步：路由决策
 
@@ -22,6 +27,8 @@ metadata:
 各层调用方式：
 - rea / craft-anything / reverse_lab_tools：MCP 工具直接调用（`mcp__rea__*` 等）。
 - reverse-skill 技能模块与 open-reverselab KB：读对应 SKILL.md / kb 文章后再行动。
+
+CTF 题目与教学挑战属于沙箱环境，直接按对应路由解题。
 
 ## 第 2 步：证据沉淀
 
